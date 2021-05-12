@@ -34,12 +34,13 @@ async function getChangedFile () {
   const files = gitOutput
     .split('\n')
     .map((file) => file.trim())
+    .filter((file) => file)
 
   core.info('Files changed:')
   files.forEach((file) => core.info(`- ${file}`))
 
   const REGEX = core.getInput('regex', { required: true })
-  const matchingFiles = files.filter((file) => file.matches(REGEX))
+  const matchingFiles = files.filter((file) => file.match(REGEX))
 
   core.info('Matching files:')
   matchingFiles.forEach((file) => core.info(`- ${file}`))
