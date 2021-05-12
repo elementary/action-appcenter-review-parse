@@ -7102,7 +7102,7 @@ function getShas () {
       }
 
     default:
-      core.setFailed('Unable to get head git ref')
+      throw new Error('Unable to get head git ref')
   }
 }
 
@@ -7118,11 +7118,11 @@ async function getChangedFile () {
   })
 
   if (response.status !== 200) {
-    core.setFailed('GitHub API returned non 200 status code')
+    throw new Error('GitHub API returned non 200 status code')
   }
 
   if (response.data.status !== 'ahead') {
-    core.setFailed('Head commit is not ahead of base commit')
+    throw new Error('Head commit is not ahead of base commit')
   }
 
   const files = response.data.files
@@ -7156,6 +7156,7 @@ async function fileData (filePath) {
   const fileContents = await readFileSync(fullPath, 'utf8')
   const fileData = JSON.parse(fileContents)
 
+  const REGEX = core.getInput('regex', { required: true })
   const filePathData = filePath.match(REGEX).groups
 
   return Object.assign({}, fileData, filePathData)

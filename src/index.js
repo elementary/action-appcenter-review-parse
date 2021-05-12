@@ -19,7 +19,7 @@ function getShas () {
       }
 
     default:
-      core.setFailed('Unable to get head git ref')
+      throw new Error('Unable to get head git ref')
   }
 }
 
@@ -35,11 +35,11 @@ async function getChangedFile () {
   })
 
   if (response.status !== 200) {
-    core.setFailed('GitHub API returned non 200 status code')
+    throw new Error('GitHub API returned non 200 status code')
   }
 
   if (response.data.status !== 'ahead') {
-    core.setFailed('Head commit is not ahead of base commit')
+    throw new Error('Head commit is not ahead of base commit')
   }
 
   const files = response.data.files
