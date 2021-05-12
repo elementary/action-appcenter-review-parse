@@ -411,7 +411,7 @@ async function fileData (path) {
 
 async function run () {
   const REGEX = core.getInput('regex', { required: true })
-  const fileRegex = new Regex(REGEX)
+  const fileRegex = new RegExp(REGEX)
 
   const files = await getChangedFiles()
 
