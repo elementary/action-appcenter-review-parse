@@ -73,6 +73,7 @@ async function fileData (filePath) {
   const fileContents = await readFileSync(fullPath, 'utf8')
   const fileData = JSON.parse(fileContents)
 
+  const REGEX = core.getInput('regex', { required: true })
   const filePathData = filePath.match(REGEX).groups
 
   return Object.assign({}, fileData, filePathData)
