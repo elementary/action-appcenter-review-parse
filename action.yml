@@ -20,7 +20,7 @@ inputs:
     required: false
     default: ${{ github.workspace }}
 
-  fileRegex:
+  regex:
     description: JS Regex to parse the file path into usable data
     required: false
     default: |
