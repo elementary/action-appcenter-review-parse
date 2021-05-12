@@ -7083,9 +7083,7 @@ function wrappy (fn, cb) {
 
 const core = __nccwpck_require__(186)
 const exec = __nccwpck_require__(514)
-const { context, GitHub } = __nccwpck_require__(438)
-
-console.log(GitHub)
+const { context, getOctokit } = __nccwpck_require__(438)
 
 function getShas () {
   switch (context.eventName) {
@@ -7107,7 +7105,7 @@ function getShas () {
 }
 
 async function getChangedFile () {
-  const client = new GitHub(core.getInput('token', { required: true }))
+  const client = getOctokit(core.getInput('token', { required: true }))
   const { head, base } = getShas()
 
   const response = await client.repos.compareCommits({

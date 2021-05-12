@@ -1,8 +1,6 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec')
-const { context, GitHub } = require('@actions/github')
-
-console.log(GitHub)
+const { context, getOctokit } = require('@actions/github')
 
 function getShas () {
   switch (context.eventName) {
@@ -24,7 +22,7 @@ function getShas () {
 }
 
 async function getChangedFile () {
-  const client = new GitHub(core.getInput('token', { required: true }))
+  const client = getOctokit(core.getInput('token', { required: true }))
   const { head, base } = getShas()
 
   const response = await client.repos.compareCommits({
