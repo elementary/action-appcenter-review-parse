@@ -1,18 +1,20 @@
 const core = require('@actions/core')
 const exec = require('@actions/exec')
-const { context } = require('@actions/github')
+const { context, GitHub } = require('@actions/github')
 
-function getHeadSha () {
+function getShas () {
   switch (context.eventName) {
     case 'pull_request':
-      if (context.payload.pull_request != null && context.payload.pull_request.base != null) {
-        return context.payload.pull_request.base.sha
-      } else {
-        core.setFailed('Pull request does not have base sha')
+      return {
+        base: context.payload.pull_request.base.sha,
+        head: context.payload.pull_request.head.sha
       }
 
     case 'push':
-      return context.payload.before
+      return {
+        base: context.payload.before,
+        head: context.payload.after
+      }
 
     default:
       core.setFailed('Unable to get head git ref')
@@ -20,21 +22,27 @@ function getHeadSha () {
 }
 
 async function getChangedFile () {
-  let gitOutput = ''
-  await exec.exec('git', ['diff', '--name-only', getHeadSha(), 'HEAD'], {
-    cwd: core.getInput('workspace', { required: true }),
-    listeners: {
-      stdout (data) {
-        gitOutput += data.toString()
-      }
-    },
-    silent: true
+  const client = new GitHub(core.getInput('token', { required: true }))
+  const { head, base } = getShas()
+
+  const response = await client.repos.compareCommits({
+    base,
+    head,
+    owner: context.repo.owner,
+    repo: context.repo.repo
   })
 
-  const files = gitOutput
-    .split('\n')
-    .map((file) => file.trim())
-    .filter((file) => file)
+  if (response.status !== 200) {
+    core.setFailed('GitHub API returned non 200 status code')
+  }
+
+  if (response.data.status !== 'ahead') {
+    core.setFailed('Head commit is not ahead of base commit')
+  }
+
+  const files = response.data.files
+    .filter((file) => ['added', 'modified', 'renamed'].includes(file.status))
+    .map((file) => file.filename)
 
   core.info('Files changed:')
   files.forEach((file) => core.info(`- ${file}`))
