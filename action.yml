@@ -1,0 +1,36 @@
+---
+
+# https://help.github.com/en/articles/metadata-syntax-for-github-actions
+
+name: appcenter-review-parse
+description: Parses information for the appcenter-review repository
+author: elementary
+
+branding:
+  icon: crosshair
+  color: green
+
+runs:
+  using: node12
+  main: src/index.js
+
+inputs:
+  workspace:
+    description: The git repository to parse for files
+    required: false
+    default: ${{ github.workspace }}
+
+  fileRegex:
+    description: JS Regex to parse the file path into usable data
+    required: false
+    default: "applications\/(?<rdnn>[a-zA-Z0-9\.]+)\/(?<tag>.*)\.json"
+
+outputs:
+  rdnn:
+    description: RDNN of the application we are reviewing
+  version:
+    description: Semver version of the application we are reviewing
+  source:
+    description: The source code url for the code we are reviewing
+  commit:
+    description: The commit ref of the source code we are reviewing

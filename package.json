@@ -1,0 +1,17 @@
+{
+  "name": "@elementary/action-appcenter-review-parse",
+  "version": "1.0.0",
+  "description": "Parses information for the appcenter-review repository",
+  "private": true,
+  "main": "index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elementary/action-appcenter-review-parse.git"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "semver": "^7.3.5"
+  }
+}
