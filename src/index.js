@@ -2,6 +2,8 @@ const core = require('@actions/core')
 const exec = require('@actions/exec')
 const { context, GitHub } = require('@actions/github')
 
+console.log(GitHub)
+
 function getShas () {
   switch (context.eventName) {
     case 'pull_request':

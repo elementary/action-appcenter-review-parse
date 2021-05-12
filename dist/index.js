@@ -7085,6 +7085,8 @@ const core = __nccwpck_require__(186)
 const exec = __nccwpck_require__(514)
 const { context, GitHub } = __nccwpck_require__(438)
 
+console.log(GitHub)
+
 function getShas () {
   switch (context.eventName) {
     case 'pull_request':
