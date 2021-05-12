@@ -27,10 +27,10 @@ async function getChangedFile () {
       stdout (data) {
         gitOutput += data.toString()
       }
-    }
+    },
+    silent: true
   })
 
-  const REGEX = core.getInput('regex', { required: true })
   const files = gitOutput
     .split('\n')
     .map((file) => file.trim())
@@ -38,7 +38,8 @@ async function getChangedFile () {
   core.info('Files changed:')
   files.forEach((file) => core.info(`- ${file}`))
 
-  const matchingFiles = files.filter((file) => file.matches(fileRegex))
+  const REGEX = core.getInput('regex', { required: true })
+  const matchingFiles = files.filter((file) => file.matches(REGEX))
 
   core.info('Matching files:')
   matchingFiles.forEach((file) => core.info(`- ${file}`))
