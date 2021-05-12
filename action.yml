@@ -29,7 +29,7 @@ inputs:
     description: JS Regex to parse the file path into usable data
     required: false
     default: |
-      applications\/(?<rdnn>[a-zA-Z0-9\.]+)\/(?<tag>.*)\.json
+      applications\/(?<rdnn>[a-zA-Z0-9\.]+)\/(?<version>.*)\.json
 
 outputs:
   rdnn:

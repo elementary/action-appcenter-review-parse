@@ -7084,6 +7084,8 @@ function wrappy (fn, cb) {
 const core = __nccwpck_require__(186)
 const exec = __nccwpck_require__(514)
 const { context, getOctokit } = __nccwpck_require__(438)
+const { readFileSync } = __nccwpck_require__(747)
+const { resolve } = __nccwpck_require__(622)
 
 function getShas () {
   switch (context.eventName) {
@@ -7142,20 +7144,37 @@ async function getChangedFile () {
     core.setFailed('No matching files found')
   }
 
+  core.info(`Selecting ${matchingFiles[0]}`)
+
   return matchingFiles[0]
 }
 
-async function fileData (path) {
+async function fileData (filePath) {
+  const workspace = core.getInput('workspace', { required: true })
+  const fullPath = resolve(workspace, filePath)
 
+  const fileContents = await readFileSync(fullPath, 'utf8')
+  const fileData = JSON.parse(fileContents)
+
+  const filePathData = filePath.match(REGEX).groups
+
+  return Object.assign({}, fileData, filePathData)
 }
 
 async function run () {
   const filePath = await getChangedFile()
+  const { rdnn, version, source, commit } = await fileData(filePath)
 
-  core.setOutput('rdnn', '')
-  core.setOutput('tag', '')
-  core.setOutput('source', '')
-  core.setOutput('commit', '')
+  core.info('Found this information:')
+  core.info(`RDNN: ${rdnn}`)
+  core.info(`Version: ${version}`)
+  core.info(`Source: ${source}`)
+  core.info(`Commit: ${commit}`)
+
+  core.setOutput('rdnn', rdnn)
+  core.setOutput('version', version)
+  core.setOutput('source', source)
+  core.setOutput('commit', commit)
 }
 
 ;(async () => {
