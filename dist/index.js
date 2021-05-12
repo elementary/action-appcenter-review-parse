@@ -7088,7 +7088,11 @@ const { context } = __nccwpck_require__(438)
 function getHeadSha () {
   switch (context.eventName) {
     case 'pull_request':
-      return context.payload.pull_request?.base?.sha
+      if (context.payload.pull_request != null && context.payload.pull_request.base != null) {
+        return context.payload.pull_request.base.sha
+      } else {
+        core.setFailed('Pull request does not have base sha')
+      }
 
     case 'push':
       return context.payload.before
