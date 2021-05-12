@@ -1,21 +1,38 @@
 const core = require('@actions/core')
+const exec = require('@actions/exec')
+const { context } = require('@actions/github')
 
-async function getChangedFiles () {
-  return []
+function getHeadSha () {
+  switch (context.eventName) {
+    case 'pull_request':
+      return context.payload.pull_request?.base?.sha
+
+    case 'push':
+      return context.payload.before
+
+    default:
+      core.setFailed('Unable to get head git ref')
+  }
 }
 
-async function fileData (path) {
+async function getChangedFile () {
+  let gitOutput = ''
+  await exec.exec('git', ['diff', '--name-only', getHeadSha(), 'HEAD'], {
+    cwd: core.getInput('workspace', { required: true }),
+    listeners: {
+      stdout (data) {
+        gitOutput += data.toString()
+      }
+    }
+  })
 
-}
-
-async function run () {
   const REGEX = core.getInput('regex', { required: true })
-  const fileRegex = new RegExp(REGEX)
-
-  const files = await getChangedFiles()
+  const files = gitOutput
+    .split('\n')
+    .map((file) => file.trim())
 
   core.info('Files changed:')
-  files.forEach((file) => core.info(`- ${file.filename}`))
+  files.forEach((file) => core.info(`- ${file}`))
 
   const matchingFiles = files.filter((file) => file.matches(fileRegex))
 
@@ -27,6 +44,16 @@ async function run () {
   } else if (matchingFiles.length < 1) {
     core.setFailed('No matching files found')
   }
+
+  return matchingFiles[0]
+}
+
+async function fileData (path) {
+
+}
+
+async function run () {
+  const filePath = await getChangedFile()
 
   core.setOutput('rdnn', '')
   core.setOutput('tag', '')
