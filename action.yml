@@ -15,6 +15,11 @@ runs:
   main: dist/index.js
 
 inputs:
+  token:
+    description: A GitHub API token
+    required: false
+    default: ${{ github.token }}
+
   workspace:
     description: The git repository to parse for files
     required: false
