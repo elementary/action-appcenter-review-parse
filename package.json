@@ -10,7 +10,8 @@
     "url": "git+https://github.com/elementary/action-appcenter-review-parse.git"
   },
   "scripts": {
-    "build": "ncc build src/index.js -o dist --source-map"
+    "build": "ncc build src/index.js -o dist --source-map",
+    "release": "semantic-release"
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
@@ -19,6 +20,22 @@
     "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.27.0"
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.3",
+    "@semantic-release/release-notes-generator": "^9.0.3",
+    "@vercel/ncc": "^0.27.0",
+    "semantic-release": "^17.4.4"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@semantic-release/git"
+    ]
   }
 }
