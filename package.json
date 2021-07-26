@@ -35,7 +35,16 @@
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
       "@semantic-release/github",
-      "@semantic-release/git"
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "action.yml",
+            "dist/**/*.{js,map}",
+            "package.json"
+          ]
+        }
+      ]
     ]
   }
 }
