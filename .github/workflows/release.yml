@@ -29,7 +29,7 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Deploy
+      - name: Release
         run: npm run release
         env:
           GH_TOKEN: ${{ secrets.GIT_USER_TOKEN }}
