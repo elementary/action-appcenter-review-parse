@@ -7187,13 +7187,14 @@ async function getChangedFile () {
 
   if (matchingFiles.length > 1) {
     core.setFailed('Multiple matching files found')
+    return null
   } else if (matchingFiles.length < 1) {
     core.setFailed('No matching files found')
+    return null
+  } else {
+    core.info(`Selecting ${matchingFiles[0]}`)
+    return matchingFiles[0]
   }
-
-  core.info(`Selecting ${matchingFiles[0]}`)
-
-  return matchingFiles[0]
 }
 
 async function fileData (filePath) {
@@ -7211,18 +7212,21 @@ async function fileData (filePath) {
 
 async function run () {
   const filePath = await getChangedFile()
-  const { rdnn, version, source, commit } = await fileData(filePath)
+  
+  if (filePath != null) {
+    const { rdnn, version, source, commit } = await fileData(filePath)
 
-  core.info('Found this information:')
-  core.info(`RDNN: ${rdnn}`)
-  core.info(`Version: ${version}`)
-  core.info(`Source: ${source}`)
-  core.info(`Commit: ${commit}`)
+    core.info('Found this information:')
+    core.info(`RDNN: ${rdnn}`)
+    core.info(`Version: ${version}`)
+    core.info(`Source: ${source}`)
+    core.info(`Commit: ${commit}`)
 
-  core.setOutput('rdnn', rdnn)
-  core.setOutput('version', version)
-  core.setOutput('source', source)
-  core.setOutput('commit', commit)
+    core.setOutput('rdnn', rdnn)
+    core.setOutput('version', version)
+    core.setOutput('source', source)
+    core.setOutput('commit', commit)
+  }
 }
 
 ;(async () => {
