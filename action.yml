@@ -40,3 +40,5 @@ outputs:
     description: The source code url for the code we are reviewing
   commit:
     description: The commit ref of the source code we are reviewing
+  end-of-life:
+    description: Mark build as end-of-life
