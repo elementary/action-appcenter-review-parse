@@ -40,3 +40,7 @@ outputs:
     description: The source code url for the code we are reviewing
   commit:
     description: The commit ref of the source code we are reviewing
+  end-of-life:
+    description: Mark build as end-of-life
+  end-of-life-rebase:
+    description: "Mark new refs as end-of-life. This one takes an ID that supersedes the current one. By the user's request, the application data may be preserved for the new application. Note, this is actually a prefix match, so if you say org.the.app=org.new.app, then something like org.the.app.Locale will be rebased to org.new.app.Locale."
