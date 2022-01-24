@@ -7214,18 +7214,25 @@ async function run () {
   const filePath = await getChangedFile()
   
   if (filePath != null) {
-    const { rdnn, version, source, commit } = await fileData(filePath)
+    const result = await fileData(filePath)
+    const { rdnn, version, source, commit } = result
+    const endOfLife = result['end-of-life']
+    const endOfLifeRebase = result['end-of-life-rebase']
 
     core.info('Found this information:')
     core.info(`RDNN: ${rdnn}`)
     core.info(`Version: ${version}`)
     core.info(`Source: ${source}`)
     core.info(`Commit: ${commit}`)
+    core.info(`end-of-life: ${endOfLife}`)
+    core.info(`end-of-life-rebase: ${endOfLifeRebase}`)
 
     core.setOutput('rdnn', rdnn)
     core.setOutput('version', version)
     core.setOutput('source', source)
     core.setOutput('commit', commit)
+    core.setOutput('end-of-life', endOfLife)
+    core.setOutput('end-of-life-rebase', endOfLifeRebase)
   }
 }
 
