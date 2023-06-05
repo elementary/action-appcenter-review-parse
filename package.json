@@ -23,7 +23,7 @@
     "@semantic-release/github": "^7.2.3",
     "@semantic-release/release-notes-generator": "^9.0.3",
     "@vercel/ncc": "^0.36.1",
-    "semantic-release": "^17.4.7"
+    "semantic-release": "^19.0.3"
   },
   "release": {
     "branches": [
