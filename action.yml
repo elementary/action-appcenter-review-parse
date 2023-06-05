@@ -1,5 +1,4 @@
 ---
-
 # https://help.github.com/en/articles/metadata-syntax-for-github-actions
 
 name: appcenter-review-parse
@@ -11,7 +10,7 @@ branding:
   color: green
 
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
 
 inputs:
