@@ -14,8 +14,8 @@
     "release": "semantic-release"
   },
   "dependencies": {
-    "@actions/core": "~2.0",
-    "@actions/github": "~8.0"
+    "@actions/core": "^2.0.3",
+    "@actions/github": "^8.0.1"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.1",
