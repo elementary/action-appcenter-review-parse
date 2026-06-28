@@ -1,9 +1,8 @@
-const core = require('@actions/core')
-const { context, getOctokit } = require('@actions/github')
+let core
 const { readFileSync } = require('fs')
 const { resolve } = require('path')
 
-function getShas() {
+function getShas(context) {
   switch (context.eventName) {
     case 'pull_request':
       return {
@@ -23,8 +22,9 @@ function getShas() {
 }
 
 async function getChangedFile() {
+  const { context, getOctokit } = await import('@actions/github')
   const client = getOctokit(core.getInput('token', { required: true }))
-  const { head, base } = getShas()
+  const { head, base } = getShas(context)
 
   const response = await client.rest.repos.compareCommits({
     base,
@@ -80,6 +80,7 @@ async function fileData(filePath) {
 }
 
 async function run() {
+  core = await import('@actions/core')
   const filePath = await getChangedFile()
 
   if (filePath != null) {
