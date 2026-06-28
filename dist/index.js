@@ -461,7 +461,7 @@ function getShas(context) {
 }
 
 async function getChangedFile() {
-  const { context, getOctokit } = await Promise.all(/* import() */[__nccwpck_require__.e(119), __nccwpck_require__.e(228)]).then(__nccwpck_require__.t.bind(__nccwpck_require__, 3228, 23))
+  const { context, getOctokit } = await Promise.all(/* import() */[__nccwpck_require__.e(119), __nccwpck_require__.e(157)]).then(__nccwpck_require__.bind(__nccwpck_require__, 157))
   const client = getOctokit(core.getInput('token', { required: true }))
   const { head, base } = getShas(context)
 
